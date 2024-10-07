@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ruanghalal/login.dart'; // Import halaman login untuk navigasi kembali
+import 'package:ruanghalal/login.dart';
 
 class RegistrasiPage extends StatefulWidget {
   @override
@@ -7,25 +7,22 @@ class RegistrasiPage extends StatefulWidget {
 }
 
 class _RegistrasiPageState extends State<RegistrasiPage> {
+  TextEditingController phoneController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
 
   bool _isPasswordVisible = false;
 
   void _register() {
-    // Aksi pendaftaran
+    String phone = phoneController.text;
     String username = usernameController.text;
-    String email = emailController.text;
     String password = passwordController.text;
 
-    if (username.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-      // Tampilkan pesan sukses (contoh)
+    if (phone.isNotEmpty && username.isNotEmpty && password.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registrasi berhasil!')),
       );
     } else {
-      // Tampilkan pesan error jika ada field kosong
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Semua field harus diisi')),
       );
@@ -38,198 +35,175 @@ class _RegistrasiPageState extends State<RegistrasiPage> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF24CE76), Color(0xFF24CE76)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFF24CE76), Color(0xFF1EAA5F)],
           ),
         ),
-        child: Center(
+        child: SafeArea(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(40.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, // Posisi elemen di atas halaman
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 40), // Memberi jarak dari bagian atas
-
-                  // Judul Registrasi
-                  Center(
-                    child: Text(
-                      'Daftar',
-                      style: TextStyle(
-                        fontSize: 36,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 50), // Jarak antara judul dan form
-
-                  // Username Field
-                  Text(
-                    'No Telp*',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextFormField(
-                      controller: usernameController,
-                      decoration: InputDecoration(
-                        labelText: 'Nomer Telpon',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold
-                        ),
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // Email Field
-                  Text(
-                    'Username*',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextFormField(
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Username',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold
-                        ),
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // Password Field
-                  Text(
-                    'Password*',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextFormField(
-                      controller: passwordController,
-                      obscureText: !_isPasswordVisible,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: TextStyle(
-                          color: Colors.black54,
-                          fontWeight: FontWeight.bold
-                        ),
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _isPasswordVisible
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.black,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _isPasswordVisible = !_isPasswordVisible;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 30),
-
-                  // Tombol Daftar
-                  Container(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _register,
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFF32F48F),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 18), // Tinggi tombol
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      child: Text(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top -
+                    MediaQuery.of(context).padding.bottom,
+              ),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 50),
+                      Text(
                         'Daftar',
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 36,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 20),
-
-                  // Teks untuk kembali ke halaman login
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Sudah punya akun? ",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()), // Navigasi ke halaman login
-                          );
-                        },
-                        child: Text(
-                          "Masuk sekarang",
-                          style: TextStyle(
-                            color: Color(0xFF0062FF),
-                            fontWeight: FontWeight.bold,
+                      SizedBox(height: 40),
+                      _buildTextField('No. Telp*', phoneController, false),
+                      SizedBox(height: 20),
+                      _buildTextField('Username*', usernameController, false),
+                      SizedBox(height: 20),
+                      _buildTextField('Password*', passwordController, true),
+                      SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: _register,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF32F48F),
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 15),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
+                        child: Text('Daftar',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                       ),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Sudah punya akun? ",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPage()),
+                              );
+                            },
+                            child: Text(
+                              "Masuk sekarang",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        child: Row(
+                          children: [
+                            Expanded(child: Divider(color: Colors.white70)),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text('Metode Lain',
+                                  style: TextStyle(color: Colors.white70)),
+                            ),
+                            Expanded(child: Divider(color: Colors.white70)),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          _buildSocialButton("assets/icons/google_icon.png"),
+                          SizedBox(width: 20),
+                          _buildSocialButton("assets/icons/twitter_icon.png"),
+                          SizedBox(width: 20),
+                          _buildSocialButton("assets/icons/facebook_icon.png"),
+                        ],
+                      ),
+                      SizedBox(height: 40),
                     ],
                   ),
-                ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextField(
+      String label, TextEditingController controller, bool isPassword) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(height: 5),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: TextField(
+            controller: controller,
+            obscureText: isPassword && !_isPasswordVisible,
+            style: TextStyle(color: Colors.black87),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              hintText: label.split('*')[0],
+              hintStyle: TextStyle(color: Colors.black54),
+              suffixIcon: isPassword
+                  ? IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.grey,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    )
+                  : null,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSocialButton(String iconPath) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Image.asset(iconPath, width: 30, height: 30),
     );
   }
 }
